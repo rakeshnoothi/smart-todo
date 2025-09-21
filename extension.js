@@ -64,45 +64,57 @@ function getRecord(document, line, regex) {
     return null;
 }
 
+function normalizePath(filePath) {
+    return filePath.replace(/\\/g, "/").trim();
+}
+
 function updateOrAppend(filePath, absFileName, newRecords) {
+    const normalizedFileName = normalizePath(absFileName);
+
+    // Read existing TODOs.txt or start empty
     let text = "";
     if (fs.existsSync(filePath)) {
         text = fs.readFileSync(filePath, "utf8");
-    } else {
-        text = ""; // start with empty content if TODOs.txt doesn't exist
     }
 
-    // Convert records to JSON lines
+    // Prepare stringified records
     const stringifiedRecords = newRecords
         .map(r => JSON.stringify(r))
         .join("\n");
 
-    // Escape regex special chars in file path (important for Windows paths)
-    const escapedFileName = absFileName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // Escape for regex
+    const escapedFileName = normalizedFileName.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&"
+    );
 
-    // Regex to find block for this file path
+    // Regex to match the block
     const regex = new RegExp(
-        `(\\*\\*start\\*\\*\\s*FileName:\\s*${escapedFileName}\\s*)([\\s\\S]*?)(?=\\*\\*end\\*\\*)`,
+        `(\\*\\*start\\*\\*\\s*FileName:\\s*${escapedFileName}\\s*\\n)([\\s\\S]*?)(?=\\*\\*end\\*\\*)`,
         "m"
     );
 
+    let action = "";
+
     if (regex.test(text)) {
-        // Replace block
+        console.log("Block found, replacing...");
         text = text.replace(regex, (match, header) => {
             return `${header}${stringifiedRecords}\n`;
         });
     } else {
-        // Append new block
+        console.log("Block not found, appending...");
         const newBlock = `**start**
-FileName: ${absFileName}
+FileName: ${normalizedFileName}
 ${stringifiedRecords}
 **end**\n`;
+
         text += (text.endsWith("\n") ? "" : "\n") + newBlock;
+        action = "appended";
     }
 
     fs.writeFileSync(filePath, text, "utf8");
-    console.log(`Updated TODOs.txt for ${absFileName}`);
+
     vscode.window.showInformationMessage(
-        `Updated TODOs.txt with ${newRecords.length} todos for ${absFileName}`
+        `TODOs.txt ${action} successfully for ${normalizedFileName} with ${newRecords.length} record(s)`
     );
 }
