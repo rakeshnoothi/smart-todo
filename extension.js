@@ -4,7 +4,7 @@ const path = require("path");
 
 function activate(context) {
     let disposable = vscode.commands.registerCommand(
-        "rakeshnoothi-todo.todo",
+        "smart-todo-tracker.todo",
         async () => {
             const editor = vscode.window.activeTextEditor;
             if (!editor) {

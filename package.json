@@ -1,7 +1,7 @@
 {
-    "name": "rakeshnoothi-todo",
-    "displayName": "TODO",
-    "description": "Do not forget to complete your todos",
+    "name": "smart-todo-tracker",
+    "displayName": "SMART TODO",
+    "description": "Track and manage your TODOs intelligently within VS Code",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.104.0"
@@ -14,7 +14,7 @@
     "contributes": {
         "commands": [
             {
-                "command": "rakeshnoothi-todo.todo",
+                "command": "smart-todo-tracker.todo",
                 "title": "Record TODO"
             }
         ]
