@@ -1,6 +1,6 @@
 {
     "name": "smart-todo-tracker",
-    "displayName": "SMART TODO",
+    "displayName": "Smart todo tracker",
     "description": "Track and manage your TODOs intelligently within VS Code",
     "version": "0.0.1",
     "engines": {
