@@ -1,13 +1,24 @@
 {
     "name": "smart-todo-tracker",
-    "displayName": "Smart todo tracker",
+    "displayName": "Smart TODO Tracker",
     "description": "Track and manage your TODOs intelligently within VS Code",
     "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rakeshnoothi/smart-todo"
+    },
     "engines": {
         "vscode": "^1.104.0"
     },
     "categories": [
         "Other"
+    ],
+    "keywords": [
+        "todo",
+        "tasks",
+        "productivity",
+        "vscode",
+        "tracker"
     ],
     "activationEvents": [],
     "main": "./extension.js",
